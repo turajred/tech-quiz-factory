@@ -1,17 +1,54 @@
 import { useState } from 'react';
 import { MapVisualization } from '../components/MapVisualization';
 import { RoutePanel } from '../components/RoutePanel';
-import { calculateShortestPath } from '../utils/pathFinder';
+import { mergeSort } from '../utils/pathFinder';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
+import { useToast } from '@/components/ui/use-toast';
+
+const routes = [
+  {
+    name: 'Direct Route',
+    distance: '264',
+    time: '6h 30m',
+    cost: '৳800',
+    description: 'Direct highway route via N1',
+  },
+  {
+    name: 'Scenic Route',
+    distance: '295',
+    time: '7h 45m',
+    cost: '৳950',
+    description: 'Scenic route via Comilla',
+  },
+  {
+    name: 'Alternative Route',
+    distance: '280',
+    time: '7h',
+    cost: '৳850',
+    description: 'Alternative route via Narsingdi',
+  },
+];
 
 const Index = () => {
   const [selectedRoute, setSelectedRoute] = useState<number | null>(null);
   const [isCalculating, setIsCalculating] = useState(false);
+  const [sortedRoutes, setSortedRoutes] = useState<typeof routes>([]);
+  const { toast } = useToast();
 
   const handleFindPath = async () => {
     setIsCalculating(true);
     await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate calculation
+    
+    const sorted = mergeSort([...routes]);
+    setSortedRoutes(sorted);
+    setSelectedRoute(routes.findIndex(r => r.distance === sorted[0].distance));
+    
+    toast({
+      title: "Shortest Path Found!",
+      description: `The ${sorted[0].name} is the shortest with ${sorted[0].distance} km.`,
+    });
+    
     setIsCalculating(false);
   };
 
@@ -38,7 +75,7 @@ const Index = () => {
           <div className="lg:col-span-2">
             <MapVisualization selectedRoute={selectedRoute} />
           </div>
-          <div>
+          <div className="space-y-6">
             <RoutePanel 
               onRouteSelect={setSelectedRoute}
               selectedRoute={selectedRoute}
@@ -52,6 +89,24 @@ const Index = () => {
                 {isCalculating ? 'Calculating...' : 'Find Shortest Path'}
               </Button>
             </div>
+            
+            {sortedRoutes.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-secondary p-4 rounded-lg"
+              >
+                <h3 className="font-semibold mb-2">Sorted Routes by Distance</h3>
+                <div className="space-y-2">
+                  {sortedRoutes.map((route, index) => (
+                    <div key={index} className="text-sm flex justify-between items-center">
+                      <span>{route.name}</span>
+                      <span className="font-medium">{route.distance} km</span>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            )}
           </div>
         </div>
       </motion.div>

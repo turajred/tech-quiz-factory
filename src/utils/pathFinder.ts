@@ -11,6 +11,47 @@ interface Edge {
   cost: number;
 }
 
+interface Route {
+  name: string;
+  distance: string;
+  time: string;
+  cost: string;
+  description: string;
+}
+
+const mergeSort = (arr: Route[]): Route[] => {
+  if (arr.length <= 1) return arr;
+
+  const mid = Math.floor(arr.length / 2);
+  const left = arr.slice(0, mid);
+  const right = arr.slice(mid);
+
+  return merge(mergeSort(left), mergeSort(right));
+};
+
+const merge = (left: Route[], right: Route[]): Route[] => {
+  let result: Route[] = [];
+  let leftIndex = 0;
+  let rightIndex = 0;
+
+  while (leftIndex < left.length && rightIndex < right.length) {
+    const leftDistance = parseInt(left[leftIndex].distance);
+    const rightDistance = parseInt(right[rightIndex].distance);
+
+    if (leftDistance < rightDistance) {
+      result.push(left[leftIndex]);
+      leftIndex++;
+    } else {
+      result.push(right[rightIndex]);
+      rightIndex++;
+    }
+  }
+
+  return result.concat(left.slice(leftIndex)).concat(right.slice(rightIndex));
+};
+
+export { mergeSort };
+
 export const calculateShortestPath = (
   nodes: Node[],
   edges: Edge[],
