@@ -6,7 +6,16 @@ import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import { useToast } from '@/components/ui/use-toast';
 
-const routes = [
+export interface Route {
+  name: string;
+  distance: string;
+  time: string;
+  cost: string;
+  description: string;
+  perk: string;
+}
+
+const routes: Route[] = [
   {
     name: 'Direct Route',
     distance: '264',
@@ -92,7 +101,7 @@ const routes = [
 const Index = () => {
   const [selectedRoute, setSelectedRoute] = useState<number | null>(null);
   const [isCalculating, setIsCalculating] = useState(false);
-  const [sortedRoutes, setSortedRoutes] = useState<typeof routes>([]);
+  const [sortedRoutes, setSortedRoutes] = useState<Route[]>([]);
   const { toast } = useToast();
 
   const handleFindPath = async () => {

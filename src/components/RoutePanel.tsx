@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Clock, DollarSign, MapPin, Gift } from 'lucide-react';
+import { Route } from '../pages/Index';
 
 interface Props {
   onRouteSelect: (index: number) => void;
@@ -7,7 +8,7 @@ interface Props {
 }
 
 export const RoutePanel = ({ onRouteSelect, selectedRoute }: Props) => {
-  const routes = [
+  const routes: Route[] = [
     {
       name: 'Direct Route',
       distance: '264 km',
