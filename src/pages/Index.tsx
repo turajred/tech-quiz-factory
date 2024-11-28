@@ -108,7 +108,7 @@ const Index = () => {
     setIsCalculating(true);
     await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate calculation
     
-    const sorted = mergeSort([...routes]);
+    const sorted = mergeSort([...routes]) as Route[];
     setSortedRoutes(sorted);
     setSelectedRoute(routes.findIndex(r => r.distance === sorted[0].distance));
     
