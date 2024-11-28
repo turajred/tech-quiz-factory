@@ -1,7 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
- 
+
 @layer base {
   :root {
     --background: 0 0% 98%;
@@ -36,6 +36,11 @@
   }
 }
 
+.map-container {
+  @apply relative w-full h-[600px] rounded-xl border border-border bg-card overflow-hidden shadow-lg;
+  background: linear-gradient(to bottom right, #f8fafc, #f1f5f9);
+}
+
 .path-node {
   @apply w-4 h-4 rounded-full transition-all duration-300;
 }
@@ -46,8 +51,4 @@
 
 .route-card {
   @apply bg-card p-6 rounded-lg shadow-sm border border-border transition-all duration-300 hover:shadow-md;
-}
-
-.map-container {
-  @apply relative w-full h-[600px] rounded-xl border border-border bg-card overflow-hidden;
 }
